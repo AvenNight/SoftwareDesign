@@ -1,0 +1,95 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Generics.BinaryTrees
+{
+    public class BinaryTree<T> : IEnumerable<T> where T : IComparable
+    {
+        public T Value { get; private set; }
+        public BinaryTree<T> Parrent { get; private set; }
+        public BinaryTree<T> Left { get; private set; }
+        public BinaryTree<T> Right { get; private set; }
+
+        public BinaryTree() { }
+        public BinaryTree(T value)
+        {
+            Value = value;
+        }
+
+        public void Add(T value, BinaryTree<T> tree = null)
+        {
+            tree = tree ?? this;
+            if (tree.Left == null && tree.Right == null && Value.Equals(default(T)))
+            {
+                Value = value;
+                return;
+            }
+            if (value.CompareTo(Value) <= 0)
+            {
+
+                if (tree.Left != null)
+                    Add(value, tree.Left);
+                else
+                    tree.Left = new BinaryTree<T> { Value = value };
+            }
+            else
+            {
+                if (tree.Left != null)
+                    Add(value, tree.Right);
+                else
+                    tree.Right = new BinaryTree<T> { Value = value };
+            }
+        }
+
+        public T First(BinaryTree<T> tree = null)
+        {
+            tree = tree ?? this;
+            if (tree.Left != null)
+                First(tree.Left);
+            return tree.Value;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            var tree = this;
+            var visited = new HashSet<BinaryTree<T>>();
+            while (this != null)
+            {
+                if (tree.Left != null && !visited.Contains(tree.Left))
+                {
+                    tree = tree.Left;
+                    continue;
+                }
+                else if (!visited.Contains(tree))
+                {
+                    visited.Add(tree);
+                    yield return tree.Value;
+                }
+                else if (tree.Right != null && !visited.Contains(tree.Right))
+                {
+                    tree = tree.Right;
+                    continue;
+                }
+                else if (!visited.Contains(tree))
+                {
+                    visited.Add(tree);
+                    yield return tree.Value;
+                }
+                else break;
+            }
+        }
+    }
+
+    public class BinaryTree
+    {
+        public static BinaryTree<T> Create<T>(params T[] values) where T : IComparable
+        {
+            var bt = new BinaryTree<T>();
+            foreach (var e in values)
+                bt.Add(e);
+            return bt;
+        }
+    }
+}
