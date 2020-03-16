@@ -31,17 +31,13 @@ namespace Delegates.PairsAnalysis
             }
         }
 
-        public static int MaxIndex(this IEnumerable<int> sequence) =>
-            MaxIndex(sequence, int.MinValue);
-
-        public static int MaxIndex(this IEnumerable<double> sequence) =>
-            MaxIndex(sequence, double.MinValue);
-
-        public static int MaxIndex<T>(this IEnumerable<T> sequence, T maxValue = default) where T : IComparable
+        public static int MaxIndex<T>(this IEnumerable<T> sequence) where T : IComparable
         {
             int i = 0, maxIndex = -1;
+            T maxValue = default;
             foreach (var e in sequence)
             {
+                if (i == 0) maxValue = e;
                 if (e.CompareTo(maxValue) > 0)
                 {
                     maxValue = e;

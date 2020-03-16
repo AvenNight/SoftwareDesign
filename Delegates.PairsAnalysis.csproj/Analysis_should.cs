@@ -20,6 +20,13 @@ namespace Delegates.PairsAnalysis
         }
 
         [Test]
+        public void MaxNegativeDouble()
+        {
+            Assert.AreEqual(3,
+                new[] { -2.2, -1, -2, -0.03, -3.2, -0.04 }.MaxIndex());
+        }
+
+        [Test]
         public void ThrowsAtEmptyCollection()
         {
             Assert.Throws(typeof(ArgumentException), () => Analysis.FindMaxPeriodIndex());
