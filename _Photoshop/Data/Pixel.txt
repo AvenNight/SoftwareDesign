@@ -1,0 +1,63 @@
+﻿using System;
+
+namespace MyPhotoshop
+{
+    public struct Pixel
+	{
+		private double r, g, b;
+		public double R
+		{
+			set
+			{
+				if (value < 0 || value > 1)
+					throw new ArgumentOutOfRangeException("Must be 0 - 1");
+				else
+					r = value;
+			}
+			get => r;
+		}
+		public double G
+		{
+			set
+			{
+				if (value < 0 || value > 1)
+					throw new ArgumentOutOfRangeException("Must be 0 - 1");
+				else
+					g = value;
+			}
+			get => g;
+		}
+		public double B
+		{
+			set
+			{
+				if (value < 0 || value > 1)
+					throw new ArgumentOutOfRangeException("Must be 0 - 1");
+				else
+					b = value;
+			}
+			get => b;
+		}
+
+		public Pixel(double red, double green, double blue)
+		{
+			//R = red;
+			r = red;
+			//G = green;
+			g = green;
+			//B = blue;
+			b = blue;
+		}
+		//public Pixel() : this(0, 0, 0) { }
+
+		public static Pixel operator *(Pixel p, double d) =>
+			new Pixel(p.R * d, p.G * d, p.B * d);
+		public static Pixel operator /(Pixel p, double d) =>
+			new Pixel(p.R / d, p.G / d, p.B / d);
+
+		public static Pixel operator +(Pixel p1, Pixel p2) =>
+			new Pixel(p1.R + p2.R, p1.G * p2.G, p1.B * p2.B);
+		public static Pixel operator -(Pixel p1, Pixel p2) =>
+			new Pixel(p1.R - p2.R, p1.G - p2.G, p1.B - p2.B);
+	}
+}

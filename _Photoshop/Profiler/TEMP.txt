@@ -1,0 +1,32 @@
+﻿var lp = Expression.Parameter(typeof(LighteningParameters), "lp");
+            var values = Expression.Parameter(typeof(double[]), "values");
+
+            //var ex = Expression.Lambda<Func<double[], LighteningParameters>> (
+            //    Expression.Assign(
+            //        Expression.MakeMemberAccess(
+            //            lp,
+            //            typeof(LighteningParameters).GetProperty("Coefficient")),
+            //        Expression.ArrayAccess(
+            //            values,
+            //            Expression.Constant(0))),
+            //    values
+            //    );
+
+            var body = Expression.MemberInit(
+                Expression.New(typeof(LighteningParameters).GetConstructor(new Type[0])),
+                Expression.Bind(
+                    typeof(LighteningParameters).GetProperty("Coefficient"),
+                    //Expression.ArrayIndex(
+                    //    values,
+                    //    Expression.Constant(0)))
+                    Expression.ArrayAccess(
+                        values,
+                        Expression.Constant(0)))
+                );
+
+            var ex = Expression.Lambda<Func<double[], LighteningParameters>>(
+                body,
+                values
+                );
+
+            var func = ex.Compile();
